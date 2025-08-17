@@ -1,18 +1,16 @@
 import './App.css'
 import Header from "./header";
-import Body from "./Body";
+import Main from "./Body";
 import Footer from "./Footer";
+import TinyTodo from "./TinyTodo";
 
-function App() {
+export default function App() {
   return (
     <div>
       <Header />
-      <Body />
+      <Main />
+      <TinyTodo />
       <Footer />
     </div>
   );
 }
-
-export default App;
-
-
