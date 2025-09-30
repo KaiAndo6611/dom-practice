@@ -60,56 +60,57 @@ export default function TinyTodo() {
       <h2>Mini Todo</h2>
 
       <div style={{display:"flex", gap:8}}>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
         <input
           value={text}
           onChange={(e)=>setText(e.target.value)}
           placeholder="やることを入力"
           onKeyDown={(e) => {
-            // 日本語変換中のEnterは無視
             if (e.nativeEvent.isComposing) return;
             if (e.key === "Enter") {
-              e.preventDefault(); // フォーム送信等の既定動作を抑止（保険）
+              e.preventDefault();
               addTodo();
             }
           }}
         />
         <button onClick={addTodo}>追加</button>
       </div>
+      
       <div style={{display:"flex", gap:8, marginTop:8}}>
         <button onClick={()=>setFilter("all")}   aria-pressed={filter==="all"}>All</button>
         <button onClick={()=>setFilter("active")} aria-pressed={filter==="active"}>Active</button>
         <button onClick={()=>setFilter("done")}   aria-pressed={filter==="done"}>Done</button>
       </div>
+      
       <p style={{marginTop:12}}>
         残り: <strong>{remaining}</strong> 件
       </p>
+
+      {/* 以下のリスト表示ロジックのみに統一します */}
       {todos.length === 0 ? (
+        // タスクが一件もない場合
         <p style={{opacity:0.7}}>まだタスクがありません。まずは1件追加してみましょう。</p>
-            ) : (
-        <ul> ...既存のリスト... </ul>
+      ) : filteredTodos.length === 0 ? (
+        // タスクはあるが、フィルターで該当するものが一つもない場合
+        <p style={{opacity:0.7}}>該当するタスクがありません。</p>
+      ) : (
+        // フィルターされたタスクを表示する場合
+        <ul>
+          {filteredTodos.map(td => (
+            <li key={td.id} style={{display:"flex", alignItems:"center", gap:8}}>
+              <button onClick={() => toggleTodo(td.id)}>
+                {td.done ? "✅" : "⬜️"}
+              </button>
+              <span style={{textDecoration: td.done ? "line-through" : "none"}}>
+                {td.title}
+              </span>
+              <button onClick={() => removeTodo(td.id)} style={{marginLeft:"auto"}}>
+                削除
+              </button>
+            </li>
+          ))}
+        </ul>
       )}
-      <ul>
-      {filteredTodos.length === 0 ? (
-  <p style={{opacity:0.7}}>該当するタスクがありません。</p>
-    ) : (
-    <ul>
-        {filteredTodos.map(td => (
-        <li key={td.id} style={{display:"flex", alignItems:"center", gap:8}}>
-            <button onClick={() => toggleTodo(td.id)}>
-            {td.done ? "✅" : "⬜️"}
-            </button>
-            <span style={{textDecoration: td.done ? "line-through" : "none"}}>
-            {td.title}
-            </span>
-            <button onClick={() => removeTodo(td.id)} style={{marginLeft:"auto"}}>
-            削除
-            </button>
-        </li>
-        ))}
-    </ul>
-    )}
-      </ul>
     </div>
   );
 }

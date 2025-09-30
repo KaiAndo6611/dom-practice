@@ -2,6 +2,8 @@ import './App.css'
 import Header from "./header";
 import Main from "./Body";
 import Footer from "./Footer";
+import { Routes, Route } from 'react-router-dom';
+
 import TinyTodo from "./TinyTodo";
 import ApiSample from './Apisample';
 import ApiSample2 from './ApiSample2';
@@ -18,12 +20,26 @@ import CheckRadioSample from "./CheckRadioSample";
 import FormObjectSample from "./FormObjectSample";
 import FormSubmitValidate from "./FormSubmitValidate";
 import ProfileForm from "./ProfileForm";
+import PostDetail from "./PostDetail"; 
+import NotFound from "./NotFound"; 
+import Home from "./Home";
 
 export default function App() {
   return (
     <div>
       <Header />
-      <Main />
+      <Routes>
+        <Route path="/main" element={<Main />} />
+        <Route path="/tiny-todo" element={<TinyTodo />} />
+        <Route path="/api-sample" element={<ApiSample />} />
+        <Route path="/form-validation" element={<FormSubmitValidate />} />
+        <Route path="/profile-form" element={<ProfileForm />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/posts/:id" element={<PostDetail />} />
+        <Route path="*" element={<NotFound />} /> 
+      </Routes>
+
+      {/* <Main /> */}
       {/* <TinyTodo /> */}
       {/* <ApiSample /> */}
       {/* <ApiSample2 /> */}
@@ -39,7 +55,7 @@ export default function App() {
       {/* <CheckRadioSample /> */}
       {/* <FormObjectSample /> */}
       {/* <FormSubmitValidate /> */}
-      <ProfileForm />
+      {/* <ProfileForm /> */}
       <Footer />
     </div>
   );
